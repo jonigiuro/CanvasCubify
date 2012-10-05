@@ -17,10 +17,11 @@ $(window).load(function(e){
 	newCan.height = 346;
 	
 	$('#canvas').mousemove(function(e){
-		
+		posX = e.pageX - $(this).offset().left;
+		posY = e.pageY - $(this).offset().top;
 		red = 0; green = 0; blue = 0;
 		total = 0;
-		var imgd = ctx.getImageData(e.clientX - e.clientX % pixelSize, e.clientY - e.clientY % pixelSize,pixelSize,pixelSize);
+		var imgd = ctx.getImageData(posX - posX % pixelSize, posY - posY % pixelSize,pixelSize,pixelSize);
 		var pix=imgd.data;
 		for (var i = 0, n = pix.length; i < n; i += 4) {
 		    red += pix[i];
@@ -39,16 +40,16 @@ $(window).load(function(e){
 		}
 		//ctx.putImageData(imgData,10,70);
 		$('#color').css('background-color','rgba('+red+','+green+','+blue+',1)');
-		newData = newCtx.getImageData(e.clientX - e.clientX % pixelSize, e.clientY - e.clientY % pixelSize,pixelSize,pixelSize).data;
+		newData = newCtx.getImageData(posX - posX % pixelSize, posY - posY % pixelSize,pixelSize,pixelSize).data;
 		newRed = newData[0];
 		newGreen = newData[1];
 		newBlue = newData[2]
 		if(newRed == 0 && newGreen == 0 && newBlue == 0){
 			console.log('added')
-			newCtx.putImageData(imgd, e.clientX - e.clientX % pixelSize, e.clientY - e.clientY % pixelSize);
+			newCtx.putImageData(imgd, posX - posX % pixelSize, posY - posY % pixelSize);
 
-			ctx.putImageData(imgd, e.clientX - e.clientX % pixelSize, e.clientY - e.clientY % pixelSize);
-			addCube(e.clientX - e.clientX % pixelSize, e.clientY - e.clientY % pixelSize, red, green, blue, pixelSize);
+			ctx.putImageData(imgd, posX - posX % pixelSize, posY - posY % pixelSize);
+			addCube(posX - posX % pixelSize, posY - posY % pixelSize, red, green, blue, pixelSize);
 		}
 		
 	
@@ -88,8 +89,8 @@ $(document).click(function(){
 */
 	//THREEJS
 	// set the scene size
-	var WIDTH = 1000,
-  		HEIGHT = 800;
+	var WIDTH = 500,
+  		HEIGHT = 346;
 
 	// set some camera attributes
 	var VIEW_ANGLE = 45,
@@ -179,8 +180,13 @@ $(document).click(function(){
 	renderer.render(scene, camera);
 
 	$('#container').mousemove(function(e){
-		camera.position.x = (e.clientX - 500) / 2;
+		mPosX = e.pageX - $(this).offset().left;
+		mPosY = e.pageY - $(this).offset().top;
+		camera.position.x = (mPosX - 250) / 2;
+		camera.position.y = (mPosY - 170) / 3;
 		camera.lookAt(new THREE.Vector3(0,0,0))
+		console.log(mPosX, mPosY)
+
 		//renderer.render(scene, camera);
 	})
 }
