@@ -151,12 +151,12 @@ $(document).click(function(){
 	scene.add(pointLight);
 	// draw!
 	
-
+	animate();
 	function addCube(posX,posY,red,green,blue, size){
 	// set up the sphere vars
 	var side = pixelSize / 2.5;
 	    
-	    var cubeMaterial = new THREE.MeshLambertMaterial( { color: parseInt(rgbToHex(red,green,blue)) } )
+	var cubeMaterial = new THREE.MeshLambertMaterial( { color: parseInt(rgbToHex(red,green,blue)) } )
 	    //console.log(rgbToHex(red,green,blue))
 	var cube = new THREE.Mesh(
 
@@ -181,7 +181,7 @@ $(document).click(function(){
 	$('#container').mousemove(function(e){
 		camera.position.x = (e.clientX - 500) / 2;
 		camera.lookAt(new THREE.Vector3(0,0,0))
-		renderer.render(scene, camera);
+		//renderer.render(scene, camera);
 	})
 }
 $('#container').click(function(){
@@ -190,8 +190,18 @@ $('#container').click(function(){
 	camera.lookAt = (0,0,0)
 	renderer.render(scene, camera);*/
 })
+function animate() {
+	requestAnimationFrame( animate );
+	render();
+}
+function render() {
+
+	renderer.render( scene, camera );
+
+}
 })
 
 function rgbToHex(r, g, b) {
     return "0x" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
 }
+
